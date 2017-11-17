@@ -69,6 +69,8 @@ var personGenerator = function() {
 personGenerator();
 
 /********** Convert to CSV and Download **********/
+// https://halistechnology.com/2015/05/28/use-javascript-to-export-your-data-as-csv/
+//This will need to be further tested to see cross browser compatibility and be tweaked
 function convertArrayOfObjectsToCSV(args) {
         var result, ctr, keys, columnDelimiter, lineDelimiter, data;
 
