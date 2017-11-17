@@ -46,6 +46,7 @@ var yourRandomGenerator = function(rangeOfDays){
 
 //This can be used to generate a person with the requirements.
 var person = function(name, email, creation_date,winner) {
+  //This makes person have a 1 in 10 chance of having a blank name
   var num = Math.floor(Math.random() * 10) + 1;
   if( num == 1){
     this.name = "";
@@ -70,7 +71,6 @@ personGenerator();
 
 /********** Convert to CSV and Download **********/
 // https://halistechnology.com/2015/05/28/use-javascript-to-export-your-data-as-csv/
-//This will need to be further tested to see cross browser compatibility and be tweaked
 function convertArrayOfObjectsToCSV(args) {
         var result, ctr, keys, columnDelimiter, lineDelimiter, data;
 
@@ -101,26 +101,39 @@ function convertArrayOfObjectsToCSV(args) {
 
         return result;
 }
-function downloadCSV(args, data) {
-    var filename, link;
 
-    var csv = convertArrayOfObjectsToCSV({
-        data
-    });
-    if (csv == null) return;
+function downloadCSV(data) {
+var filename, link;
+var csv = convertArrayOfObjectsToCSV({
+data
+});
+if (csv == null)
+return;
 
-    filename = args.filename || 'export.csv';
+filename = 'file.csv';
 
-    if (!csv.match(/^data:text\/csv/i)) {
-        csv = 'data:text/csv;charset=utf-8,' + csv;
-    }
-    data = encodeURI(csv);
+var blob = new Blob([csv], {type: "text/csv;charset=utf-8;"});
 
-    link = document.createElement('a');
-    link.setAttribute('href', data);
-    link.setAttribute('download', filename);
-    link.click();
+if (navigator.msSaveBlob)
+{ // IE 10+
+navigator.msSaveBlob(blob, filename)
 }
+else
+{
+var link = document.createElement("a");
+if (link.download !== undefined)
+{
 
-downloadCSV(model, model.people);
-downloadCSV(model, model.people2);
+// feature detection, Browsers that support HTML5 download attribute
+var url = URL.createObjectURL(blob);
+link.setAttribute("href", url);
+link.setAttribute("download", filename);
+link.style = "visibility:hidden";
+document.body.appendChild(link);
+link.click();
+document.body.removeChild(link);
+}
+}
+}
+downloadCSV(model.people);
+downloadCSV(model.people2);
