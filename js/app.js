@@ -38,8 +38,22 @@ var model = {
   ]
 };
 
-//Function to generate a random date rangeOfDays can be set to -60 to shave two months from now.
+//Function to generate a random date.
 var yourRandomGenerator = function(rangeOfDays){
     var today = new Date(Date.now());
     return new Date(today.getYear()+1900,today.getMonth(), today.getDate()+Math.random() *rangeOfDays);
+}
+
+//This can be used to generate a person with the requirements.
+var person = function(name, email, creation_date,winner) {
+  var num = Math.floor(Math.random() * 10) + 1;
+  if( num == 1){
+    this.name = "";
+  }else {
+      this.name = chance.name();
+  }
+  this.email = chance.email();
+  //Gets a random date between now and two months ago.
+  this.creation_date = yourRandomGenerator(-60);
+  this.winner = "no";
 }
