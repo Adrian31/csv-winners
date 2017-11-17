@@ -57,3 +57,68 @@ var person = function(name, email, creation_date,winner) {
   this.creation_date = yourRandomGenerator(-60);
   this.winner = "no";
 }
+
+//Create 100 people using person function
+var personGenerator = function() {
+  var n = 100;
+  for (var i = 1; i < n; i++){
+      model.people.push(new person());
+      model.people2.push(new person());
+  }
+}
+personGenerator();
+
+/********** Convert to CSV and Download **********/
+function convertArrayOfObjectsToCSV(args) {
+        var result, ctr, keys, columnDelimiter, lineDelimiter, data;
+
+        data = args.data || null;
+        if (data == null || !data.length) {
+            return null;
+        }
+
+        columnDelimiter = args.columnDelimiter || ',';
+        lineDelimiter = args.lineDelimiter || '\n';
+
+        keys = Object.keys(data[0]);
+
+        result = '';
+        result += keys.join(columnDelimiter);
+        result += lineDelimiter;
+
+        data.forEach(function(item) {
+            ctr = 0;
+            keys.forEach(function(key) {
+                if (ctr > 0) result += columnDelimiter;
+
+                result += item[key];
+                ctr++;
+            });
+            result += lineDelimiter;
+        });
+
+        return result;
+}
+function downloadCSV(args, data) {
+    var filename, link;
+
+    var csv = convertArrayOfObjectsToCSV({
+        data
+    });
+    if (csv == null) return;
+
+    filename = args.filename || 'export.csv';
+
+    if (!csv.match(/^data:text\/csv/i)) {
+        csv = 'data:text/csv;charset=utf-8,' + csv;
+    }
+    data = encodeURI(csv);
+
+    link = document.createElement('a');
+    link.setAttribute('href', data);
+    link.setAttribute('download', filename);
+    link.click();
+}
+
+downloadCSV(model, model.people);
+downloadCSV(model, model.people2);
