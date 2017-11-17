@@ -116,7 +116,7 @@ var winners = function(data) {
             }
         }
     }
-    console.log("The winners weeks of creation are " + creationWeek);
+    console.log("The winners weeks of creation are " + creationWeek[0] + "," + creationWeek[1] + "," + creationWeek[2] + "," + creationWeek[3] + "," + creationWeek[4]);
 }
 
 //Run these arrays through the winners function.
