@@ -69,6 +69,20 @@ var personGenerator = function() {
 }
 personGenerator();
 
+//This function takes data and checks it over to pick 5 winners
+var listNumber = 0;
+var winners = function(data) {
+  var d = new Date();
+  d.setDate(d.getDate());
+  console.log("The week of d is " +d.getWeek());
+  listNumber++;
+  var creationWeek = [0,0,0,0];
+  var count = 0;
+  var winningNumber = 5;
+  console.log("Winners from list number " + listNumber);
+
+}
+
 /********** Convert to CSV and Download **********/
 // https://halistechnology.com/2015/05/28/use-javascript-to-export-your-data-as-csv/
 function convertArrayOfObjectsToCSV(args) {
@@ -103,7 +117,7 @@ function convertArrayOfObjectsToCSV(args) {
 }
 
 function downloadCSV(data) {
-var filename, link;
+  var filename, link;
 var csv = convertArrayOfObjectsToCSV({
 data
 });
