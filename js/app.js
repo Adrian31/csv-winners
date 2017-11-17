@@ -15,60 +15,61 @@ You may use any relevant third-party packages/libraries. Ideally the program sho
 4. Update the criteria to only allow for a single winner per week.
 5. Review and refactor your code if any improvements can be made.
 */
-
 //Allows user to get the week in the year from a date.
-Date.prototype.getWeek = function () { return $.datepicker.iso8601Week(this); }
+Date.prototype.getWeek = function() {
+    return $.datepicker.iso8601Week(this);
+}
 
 var model = {
-  people: [
-    //Example of format
-    /*{
-      name: chance.name(),
-      email: chance.email(),
-      creation_date: yourRandomGenerator(-60),
-      winner: "no"
-    },*/
-  ],
+    people: [
+        //Example of format
+        /*{
+          name: chance.name(),
+          email: chance.email(),
+          creation_date: yourRandomGenerator(-60),
+          winner: "no"
+        },*/
+    ],
 
-  people2: [
-    //Example of format
-    /*{
-      name: chance.name(),
-      email: chance.email(),
-      creation_date: yourRandomGenerator(-60),
-      winner: "no"
-    },*/
-  ]
+    people2: [
+        //Example of format
+        /*{
+          name: chance.name(),
+          email: chance.email(),
+          creation_date: yourRandomGenerator(-60),
+          winner: "no"
+        },*/
+    ]
 };
 
 //Function to generate a random date.
-var yourRandomGenerator = function(rangeOfDays){
+var yourRandomGenerator = function(rangeOfDays) {
     var today = new Date(Date.now());
-    return new Date(today.getYear()+1900,today.getMonth(), today.getDate()+Math.random() *rangeOfDays);
+    return new Date(today.getYear() + 1900, today.getMonth(), today.getDate() + Math.random() * rangeOfDays);
 }
 
 //This can be used to generate a person with the requirements.
-var person = function(name, email, creation_date,winner) {
-  //This makes person have a 1 in 10 chance of having a blank name
-  var num = Math.floor(Math.random() * 10) + 1;
-  if( num == 1){
-    this.name = "";
-  }else {
-      this.name = chance.name();
-  }
-  this.email = chance.email();
-  //Gets a random date between now and two months ago.
-  this.creation_date = yourRandomGenerator(-60);
-  this.winner = "no";
+var person = function(name, email, creation_date, winner) {
+    //This makes person have a 1 in 10 chance of having a blank name
+    var num = Math.floor(Math.random() * 10) + 1;
+    if (num == 1) {
+        this.name = "";
+    } else {
+        this.name = chance.name();
+    }
+    this.email = chance.email();
+    //Gets a random date between now and two months ago.
+    this.creation_date = yourRandomGenerator(-60);
+    this.winner = "no";
 }
 
 //Create 100 people using person function
 var personGenerator = function() {
-  var n = 100;
-  for (var i = 1; i < n; i++){
-      model.people.push(new person());
-      model.people2.push(new person());
-  }
+    var n = 100;
+    for (var i = 1; i < n; i++) {
+        model.people.push(new person());
+        model.people2.push(new person());
+    }
 }
 personGenerator();
 
@@ -82,12 +83,12 @@ var winners = function(data) {
     var creationWeek = [0, 0, 0, 0];
     var count = 0;
     var winningNumber = 5;
-    console.log("Winners from list number " + listNumber);
+    console.log("********** " + "Winners from list number " + listNumber + " **********");
     while (count < 5) {
         for (var i = 0; i <= 98; i++) {
             var randomNumber = Math.floor(Math.random() * 100) + 1;
             var weekNumber = data[i].creation_date.getWeek();
-            if (//If the number matches, a winner is declared
+            if ( //If the number matches, a winner is declared
                 (randomNumber == winningNumber) &&
                 //Checks to see if a person is already a winner
                 (data[i].winner !== "winner") &&
@@ -125,68 +126,66 @@ winners(model.people2);
 /********** Convert to CSV and Download **********/
 // https://halistechnology.com/2015/05/28/use-javascript-to-export-your-data-as-csv/
 function convertArrayOfObjectsToCSV(args) {
-        var result, ctr, keys, columnDelimiter, lineDelimiter, data;
+    var result, ctr, keys, columnDelimiter, lineDelimiter, data;
 
-        data = args.data || null;
-        if (data == null || !data.length) {
-            return null;
-        }
+    data = args.data || null;
+    if (data == null || !data.length) {
+        return null;
+    }
 
-        columnDelimiter = args.columnDelimiter || ',';
-        lineDelimiter = args.lineDelimiter || '\n';
+    columnDelimiter = args.columnDelimiter || ',';
+    lineDelimiter = args.lineDelimiter || '\n';
 
-        keys = Object.keys(data[0]);
+    keys = Object.keys(data[0]);
 
-        result = '';
-        result += keys.join(columnDelimiter);
-        result += lineDelimiter;
+    result = '';
+    result += keys.join(columnDelimiter);
+    result += lineDelimiter;
 
-        data.forEach(function(item) {
-            ctr = 0;
-            keys.forEach(function(key) {
-                if (ctr > 0) result += columnDelimiter;
+    data.forEach(function(item) {
+        ctr = 0;
+        keys.forEach(function(key) {
+            if (ctr > 0) result += columnDelimiter;
 
-                result += item[key];
-                ctr++;
-            });
-            result += lineDelimiter;
+            result += item[key];
+            ctr++;
         });
+        result += lineDelimiter;
+    });
 
-        return result;
+    return result;
 }
 
 function downloadCSV(data) {
-  var filename, link;
-var csv = convertArrayOfObjectsToCSV({
-data
-});
-if (csv == null)
-return;
+    var filename, link;
+    var csv = convertArrayOfObjectsToCSV({
+        data
+    });
+    if (csv == null)
+        return;
 
-filename = 'file.csv';
+    filename = 'file.csv';
 
-var blob = new Blob([csv], {type: "text/csv;charset=utf-8;"});
+    var blob = new Blob([csv], {
+        type: "text/csv;charset=utf-8;"
+    });
 
-if (navigator.msSaveBlob)
-{ // IE 10+
-navigator.msSaveBlob(blob, filename)
-}
-else
-{
-var link = document.createElement("a");
-if (link.download !== undefined)
-{
+    if (navigator.msSaveBlob) { // IE 10+
+        navigator.msSaveBlob(blob, filename)
+    } else {
+        var link = document.createElement("a");
+        if (link.download !== undefined) {
 
-// feature detection, Browsers that support HTML5 download attribute
-var url = URL.createObjectURL(blob);
-link.setAttribute("href", url);
-link.setAttribute("download", filename);
-link.style = "visibility:hidden";
-document.body.appendChild(link);
-link.click();
-document.body.removeChild(link);
-}
-}
+            // feature detection, Browsers that support HTML5 download attribute
+            var url = URL.createObjectURL(blob);
+            link.setAttribute("href", url);
+            link.setAttribute("download", filename);
+            link.style = "visibility:hidden";
+            document.body.appendChild(link);
+            link.click();
+            document.body.removeChild(link);
+        }
+    }
 }
 downloadCSV(model.people);
 downloadCSV(model.people2);
