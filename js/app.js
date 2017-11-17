@@ -87,8 +87,7 @@ var winners = function(data) {
         for (var i = 0; i <= 98; i++) {
             var randomNumber = Math.floor(Math.random() * 100) + 1;
             var weekNumber = data[i].creation_date.getWeek();
-            if (
-                //If the number matches, a winner is declared
+            if (//If the number matches, a winner is declared
                 (randomNumber == winningNumber) &&
                 //Checks to see if a person is already a winner
                 (data[i].winner !== "winner") &&
@@ -96,16 +95,30 @@ var winners = function(data) {
                 (data[i].name != "") &&
                 //Checks if winner has a creation date within the last week
                 (weekNumber < d.getWeek()) &&
-                (count != 5)) {
+                //Checks to see if there are 5 winners already
+                (count != 5) &&
+                //This block checks if a creation week has already been taken.
+                //There is a better way to do this I'm sure but I haven't thought of it yet.
+                //I will come back to this when I think of a better solution.
+                (weekNumber != creationWeek[0]) &&
+                (weekNumber != creationWeek[1]) &&
+                (weekNumber != creationWeek[2]) &&
+                (weekNumber != creationWeek[3]) &&
+                (weekNumber != creationWeek[4])) {
+                //When a winner is found, the number of winners count goes up
                 count++;
+                creationWeek.unshift(data[i].creation_date.getWeek());
+                //Declare the person as a winner.
                 data[i].winner = "winner";
+                //Log the winner to the console.
                 console.log(data[i].name + "is a " + data[i].winner);
             }
         }
     }
+    console.log("The winners weeks of creation are " + creationWeek);
 }
 
-
+//Run these arrays through the winners function.
 winners(model.people);
 winners(model.people2);
 
