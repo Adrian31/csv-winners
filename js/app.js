@@ -15,3 +15,25 @@ You may use any relevant third-party packages/libraries. Ideally the program sho
 4. Update the criteria to only allow for a single winner per week.
 5. Review and refactor your code if any improvements can be made.
 */
+
+var model = {
+  people: [
+    //Example of format
+    /*{
+      name: chance.name(),
+      email: chance.email(),
+      creation_date: yourRandomGenerator(-60),
+      winner: "no"
+    },*/
+  ],
+
+  people2: [
+    //Example of format
+    /*{
+      name: chance.name(),
+      email: chance.email(),
+      creation_date: yourRandomGenerator(-60),
+      winner: "no"
+    },*/
+  ]
+};
