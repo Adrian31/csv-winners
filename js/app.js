@@ -16,6 +16,9 @@ You may use any relevant third-party packages/libraries. Ideally the program sho
 5. Review and refactor your code if any improvements can be made.
 */
 
+//Allows user to get the week in the year from a date.
+Date.prototype.getWeek = function () { return $.datepicker.iso8601Week(this); }
+
 var model = {
   people: [
     //Example of format
@@ -72,16 +75,39 @@ personGenerator();
 //This function takes data and checks it over to pick 5 winners
 var listNumber = 0;
 var winners = function(data) {
-  var d = new Date();
-  d.setDate(d.getDate());
-  console.log("The week of d is " +d.getWeek());
-  listNumber++;
-  var creationWeek = [0,0,0,0];
-  var count = 0;
-  var winningNumber = 5;
-  console.log("Winners from list number " + listNumber);
-
+    var d = new Date();
+    d.setDate(d.getDate());
+    console.log("The week of d is " + d.getWeek());
+    listNumber++;
+    var creationWeek = [0, 0, 0, 0];
+    var count = 0;
+    var winningNumber = 5;
+    console.log("Winners from list number " + listNumber);
+    while (count < 5) {
+        for (var i = 0; i <= 98; i++) {
+            var randomNumber = Math.floor(Math.random() * 100) + 1;
+            var weekNumber = data[i].creation_date.getWeek();
+            if (
+                //If the number matches, a winner is declared
+                (randomNumber == winningNumber) &&
+                //Checks to see if a person is already a winner
+                (data[i].winner !== "winner") &&
+                //Checks to see if name is blank
+                (data[i].name != "") &&
+                //Checks if winner has a creation date within the last week
+                (weekNumber < d.getWeek()) &&
+                (count != 5)) {
+                count++;
+                data[i].winner = "winner";
+                console.log(data[i].name + "is a " + data[i].winner);
+            }
+        }
+    }
 }
+
+
+winners(model.people);
+winners(model.people2);
 
 /********** Convert to CSV and Download **********/
 // https://halistechnology.com/2015/05/28/use-javascript-to-export-your-data-as-csv/
