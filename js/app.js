@@ -37,3 +37,9 @@ var model = {
     },*/
   ]
 };
+
+//Function to generate a random date rangeOfDays can be set to -60 to shave two months from now.
+var yourRandomGenerator = function(rangeOfDays){
+    var today = new Date(Date.now());
+    return new Date(today.getYear()+1900,today.getMonth(), today.getDate()+Math.random() *rangeOfDays);
+}
