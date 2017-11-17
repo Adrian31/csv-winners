@@ -77,7 +77,7 @@ var listNumber = 0;
 var winners = function(data) {
     var d = new Date();
     d.setDate(d.getDate());
-    console.log("The week of d is " + d.getWeek());
+    console.log("The current week of the year is " + d.getWeek());
     listNumber++;
     var creationWeek = [0, 0, 0, 0];
     var count = 0;
